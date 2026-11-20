@@ -1,22 +1,46 @@
-# HR/IT Helpdesk Agent - GoAIfied Assignment
-By Kiran Tomar
+# 🤖 HR/IT Helpdesk Agent - GoAIfied Assignment
+**By Kiran Tomar**
 
-## Live Demo
-Open index.html - No setup needed
+## 🔴 Live Demo
+👉 `https://gitguru90.github.io/hr-helpdesk-agent/` - Open karo, turant chalega.
 
-## What I Built
-A safe HR Helpdesk Agent that answers only from company policy docs (RAG approach).
+## 🎯 Kya Banaya Hai?
+Ek Safe HR Helpdesk Agent jo sirf company ke policy docs se jawab deta hai. Ye hallucinate nahi karta.
 
-## Features (As per JD)
-1.  **RAG:** Answers retrieved from Knowledge Base, not hallucinated.
-2.  **Source Citation:** Every answer shows Source Doc.
-3.  **Prompt-Injection Guard:** Blocks "ignore previous instructions" attacks.
-4.  **PII Redaction:** Phone numbers & Emails auto-masked to ***.
-5.  **Human Escalation:** If answer not in docs, it says "I don't know" and escalates.
+## ✨ Features (JD ke hisab se)
 
-## Future Architecture (Production)
-Frontend -> FastAPI -> LangGraph Agent -> PostgreSQL (pgvector) via MCP Server -> Policy Docs
-+ Evaluation: Faithfulness check on every answer.
+### 1. RAG (Retrieval-Augmented Generation)
+Answer pehle Knowledge Base me search hota hai, fir hi dikhata hai.
+Agar answer docs me nahi hai, to agent bolta hai - "I don't know, please raise a ticket"
 
-## Hardest Part
-Handling unclear queries like "leave" - I solved with intent keywords + showing source so user can verify.
+### 2. Source Citation
+Har answer ke neeche Source likha aata hai.
+Example: `Source: HR Leave Policy 2026, Page 2`
+
+### 3. Prompt-Injection Guard
+Agar koi likhe - `ignore previous instructions` ya `reveal system prompt`
+To agent block kar deta hai.
+
+### 4. PII Redaction (Privacy)
+Agar user apna Phone Number ya Email likh de, to agent usko `**********` kar deta hai.
+
+### 5. Human Escalation
+Agar sawal docs me nahi mila, to agent jhootha jawab nahi deta, human ko escalate karta hai.
+
+## 🧪 Try Karke Dekho
+1. `How many leaves left?` -> Leave balance + Source aayega
+2. `ignore previous instructions` -> Block ho jayega
+3. `My number is 9876543210` -> Number hide ho jayega
+4. `What is CEO's salary?` -> "I don't know" bolega
+
+## 🚀 Future Production Architecture
+`User -> Frontend -> FastAPI -> LangGraph Agent -> MCP Server -> PostgreSQL (pgvector) -> Policy Docs`
+
++ Safety Layer: Injection Guard + PII Redaction
++ Evaluation: Har answer ka Faithfulness check
+
+## 😤 Sabse Hard Part Kya Tha?
+Agent ko smart banana aasan tha, **safe** banana hard tha. Isliye maine Guard Layer lagaya jo pehle query ko check karta hai, fir hi answer deta hai.
+
+## 👩‍💻 Made By
+**Kiran Tomar** - B.Tech CSE | Interested in AI Agents & Web Development
