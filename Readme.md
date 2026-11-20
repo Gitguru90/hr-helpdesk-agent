@@ -43,4 +43,4 @@ Agar sawal docs me nahi mila, to agent jhootha jawab nahi deta, human ko escalat
 Agent ko smart banana aasan tha, **safe** banana hard tha. Isliye maine Guard Layer lagaya jo pehle query ko check karta hai, fir hi answer deta hai.
 
 ## 👩‍💻 Made By
-**Kiran Tomar** - B.Tech CSE | Interested in AI Agents & Web Development
+**Kiran Tomar** - B.Tech Mathematics and computing  | Interested in AI Agents & Web Development
