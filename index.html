@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HR/IT Helpdesk Agent - By Kiran Tomar</title>
+<style>
+body{font-family:Arial;max-width:700px;margin:auto;padding:20px;background:#f5f5f5}
+.box{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px #ddd}
+input{width:75%;padding:10px} button{padding:10px 15px;background:#000;color:#fff;border:none;border-radius:6px;cursor:pointer}
+.tag{display:inline-block;background:#e8f5e9;padding:4px 8px;border-radius:20px;font-size:12px;margin:2px}
+.source{font-size:12px;color:#666;margin-top:10px;border-top:1px solid #eee;padding-top:8px}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>🤖 HR/IT Helpdesk Agent</h2>
+<p>Built by <b>Kiran Tomar</b> for GoAIfied Assignment | RAG + Safety Demo</p>
+<p>
+<span class="tag" onclick="quick('leave')">Leave Balance</span>
+<span class="tag" onclick="quick('salary slip')">Salary Slip</span>
+<span class="tag" onclick="quick('laptop not working')">Laptop Issue</span>
+<span class="tag" onclick="quick('WFH policy')">WFH Policy</span>
+</p>
+<input id="q" placeholder="Ask: How many leaves left? / My laptop is not working">
+<button onclick="ask()">Ask Agent</button>
+<p id="ans" style="margin-top:15px"></p>
+<p id="src" class="source"></p>
+<p id="guard" style="color:red;font-size:13px"></p>
+</div>
+
+<script>
+// Mini Knowledge Base - This is our RAG Docs
+const docs = [
+ {key:["leave","chutti"], ans:"You have 12 Casual Leaves + 8 Sick Leaves left as per 2026 policy. You can apply on HR Portal > Leaves.", src:"Source: HR Leave Policy 2026, Page 2"},
+ {key:["salary","payslip","slip"], ans:"Salary slip is generated on 5th of every month. Download from: Portal > Payroll > Payslip.", src:"Source: Payroll Policy Doc v3"},
+ {key:["laptop","it","system","wifi","not working"], ans:"For IT issue: 1) Restart system 2) Raise ticket on IT Portal. Urgent? Call IT Helpdesk 1800-xxx. Ticket ID will be generated.", src:"Source: IT Support SOP"},
+ {key:["wfh","work from home"], ans:"WFH allowed 2 days/week with manager approval. Apply 1 day before on portal.", src:"Source: WFH Policy 2026"},
+ {key:["pf","provident"], ans:"PF is deducted 12% of basic. Check details on EPFO portal using UAN.", src:"Source: PF Policy Doc"}
+];
+
+function quick(t){ document.getElementById('q').value = t; ask(); }
+
+function ask(){
+  let raw = document.getElementById('q').value;
+  let q = raw.toLowerCase();
+  document.getElementById('guard').innerText = "";
+
+  // 1. PROMPT INJECTION GUARD
+  if(q.includes("ignore") || q.includes("forget") || q.includes("system prompt") || q.includes("reveal")){
+    document.getElementById('ans').innerText = "⚠️ I can't follow that instruction. I only answer HR/IT policy questions.";
+    document.getElementById('src').innerText = "Guard: Prompt-Injection Blocked";
+    return;
+  }
+
+  // 2. PII REDACTION
+  let redacted = raw.replace(/[0-9]{10}/g,"**********").replace(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/gi,"[EMAIL REDACTED]");
+  if(redacted !== raw){
+    document.getElementById('guard').innerText = "PII Detected & Redacted for safety. Your original: " + redacted;
+  }
+
+  // 3. RAG SEARCH
+  for(let d of docs){
+    if(d.key.some(k => q.includes(k))){
+      document.getElementById('ans').innerText = d.ans;
+      document.getElementById('src').innerText = d.src + " | Retrieved via Keyword RAG";
+      return;
+    }
+  }
+  document.getElementById('ans').innerText = "I don't know this from policy docs. Please raise a ticket on HR Portal - a human will help. I won't hallucinate.";
+  document.getElementById('src').innerText = "Source: Not found in Knowledge Base - Escalated to Human";
+}
+</script>
+</body>
+</html>
