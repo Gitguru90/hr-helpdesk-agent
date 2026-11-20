@@ -1,0 +1,3 @@
+User -> index.html -> Knowledge Base (docs array)
+Future: LangGraph -> MCP Server -> PostgreSQL (pgvector)
+Safety Layer: Injection Guard + PII Redaction
